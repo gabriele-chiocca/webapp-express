@@ -49,6 +49,8 @@ function show(req, res) {
 
       const movie = movieresults[0];
 
+      movie.image = `/img/movies_cover/${movie.image}`;
+
       movie.reviews = reviewresults;
 
       res.json(movie);
