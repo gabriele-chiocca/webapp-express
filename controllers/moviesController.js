@@ -41,12 +41,6 @@ function show(req, res) {
         });
       }
 
-      if (reviewresults.length === 0) {
-        return res.status(400).json({
-          message: 'Recensione non trovata',
-        });
-      }
-
       const movie = movieresults[0];
 
       movie.image = `/img/movies_cover/${movie.image}`;
@@ -56,8 +50,10 @@ function show(req, res) {
       res.json(movie);
     });
   });
-  module.exports = {
-    index,
-    show,
-  };
 }
+
+module.exports = {
+  index,
+  show,
+};
+s;
