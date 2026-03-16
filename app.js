@@ -22,9 +22,10 @@ app.get('/movies', (req, res) => {
 
 app.get('/movies/:id', (req, res) => {
   const id = req.params.id;
-  const sql = 'SELECT * FROM movies WHERE id = ?';
+  const moviesql = 'SELECT * FROM movies WHERE id = ?';
+  const reviewsql = 'SELECT * FROM reviews WHERE movie_id = ?';
 
-  connection.query(sql, [id], (err, results) => {
+  connection.query(moviesql, [id], (err, movieresults) => {
     if (err) {
       console.error(err);
       return res.status(500).json({
@@ -32,13 +33,32 @@ app.get('/movies/:id', (req, res) => {
       });
     }
 
-    if (results.length === 0) {
+    if (movieresults.length === 0) {
       return res.status(400).json({
         message: 'Film non trovato',
       });
     }
 
-    res.json(results[0]);
+    connection.query(reviewsql, [id], (err, reviewresults) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({
+          message: 'Errore nel recupero delle recensioni',
+        });
+      }
+
+      if (reviewresults.length === 0) {
+        return res.status(400).json({
+          message: 'Recensione non trovata',
+        });
+      }
+
+      const movie = movieresults[0];
+
+      movie.reviews = reviewresults;
+
+      res.json(movie);
+    });
   });
 });
 
