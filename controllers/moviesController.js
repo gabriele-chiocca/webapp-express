@@ -1,16 +1,6 @@
-require('dotenv').config();
-const express = require('express');
-const app = express();
-const connection = require('./config/db');
-const port = process.env.PORT || 3000;
+const connection = require('../config/db');
 
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-  res.send('Server attivo');
-});
-
-app.get('/movies', (req, res) => {
+function index(req, res) {
   const sql = 'SELECT * FROM movies';
 
   connection.query(sql, (err, results) => {
@@ -22,9 +12,9 @@ app.get('/movies', (req, res) => {
     }
     res.json(results);
   });
-});
+}
 
-app.get('/movies/:id', (req, res) => {
+function show(req, res) {
   const id = req.params.id;
   const moviesql = 'SELECT * FROM movies WHERE id = ?';
   const reviewsql = 'SELECT * FROM reviews WHERE movie_id = ?';
@@ -64,8 +54,8 @@ app.get('/movies/:id', (req, res) => {
       res.json(movie);
     });
   });
-});
-
-app.listen(port, () => {
-  console.log(`Server avviato sulla porta ${port}`);
-});
+  module.exports = {
+    index,
+    show,
+  };
+}
