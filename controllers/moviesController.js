@@ -56,4 +56,3 @@ module.exports = {
   index,
   show,
 };
-s;
