@@ -43,8 +43,6 @@ function show(req, res) {
 
       const movie = movieresults[0];
 
-      movie.image = `/img/movies_cover/${movie.image}`;
-
       movie.reviews = reviewresults;
 
       res.json(movie);
@@ -52,6 +50,25 @@ function show(req, res) {
   });
 }
 
+function storeReview(req, res) {
+  const movieId = req.params.id;
+  const { name, vote, text } = req.body;
+
+  const sql = `
+  INSERT INTO reviews(movie_id, name, vote, text)
+  VALUES (?, ?, ?, ?)
+  `;
+
+  connection.query(sql, [movieId, name, vote, text], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({
+        message: 'Errore inserimento recensione ',
+      });
+    }
+    res.json(results);
+  });
+}
 module.exports = {
   index,
   show,
