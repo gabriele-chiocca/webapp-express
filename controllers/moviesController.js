@@ -72,4 +72,5 @@ function storeReview(req, res) {
 module.exports = {
   index,
   show,
+  storeReview,
 };
