@@ -69,6 +69,7 @@ function storeReview(req, res) {
     res.json(results);
   });
 }
+
 module.exports = {
   index,
   show,

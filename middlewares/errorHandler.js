@@ -1,5 +1,5 @@
 function errorHandler(err, req, res, next) {
-  console.err(err);
+  console.error(err);
 
   res.status(500).json({
     message: 'Errore del server',
